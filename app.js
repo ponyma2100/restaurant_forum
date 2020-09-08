@@ -6,6 +6,7 @@ const flash = require('connect-flash')
 const app = express()
 const port = 3000
 const bodyParser = require('body-parser')
+const passport = require('./config/passport')
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -15,6 +16,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 app.use((req, res, next) => {
@@ -27,4 +30,4 @@ app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
 })
 
-require('./routes')(app)
+require('./routes')(app, passport) // 把app, passport 傳入 routes
