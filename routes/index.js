@@ -20,6 +20,7 @@ module.exports = (app, passport) => {
     }
     res.redirect('/signin')
   }
+
   app.get('/', authenticated, (req, res) => {
     res.redirect('/restaurants')
   })
@@ -31,6 +32,7 @@ module.exports = (app, passport) => {
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
   app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant)
+  app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
