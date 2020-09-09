@@ -9,6 +9,8 @@ const bodyParser = require('body-parser')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
