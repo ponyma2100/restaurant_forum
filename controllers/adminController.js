@@ -1,7 +1,9 @@
 const fs = require('fs')
 const db = require('../models')
 const restaurant = require('../models/restaurant')
+const user = require('../models/user')
 const Restaurant = db.Restaurant
+const User = db.User
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -70,6 +72,7 @@ const adminController = {
   },
 
   putRestaurant: (req, res) => {
+
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
       return res.redirect('back')
@@ -108,6 +111,7 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
         })
+
     }
   },
 
@@ -119,6 +123,36 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+
+  getUsers: (req, res) => {
+    return User.findAll({
+      raw: true
+    }).then(users => {
+      return res.render('admin/users', { users: users })
+    })
+  },
+  putUsers: (req, res) => {
+    const id = req.params.id
+    return User.findByPk(id)
+      .then(user => {
+        if (user.isAdmin) {
+          user.update({
+            isAdmin: false
+          }).then(() => {
+            req.flash('success_messages', `User'roll was successfully update to user`)
+            return res.redirect('/admin/users')
+          })
+        } else {
+          user.update({
+            isAdmin: true
+          }).then(() => {
+            req.flash('success_messages', `User'roll was successfully update to admin`)
+            return res.redirect('/admin/users')
+          })
+        }
+      })
+
   }
 }
 

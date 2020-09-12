@@ -53,4 +53,7 @@ module.exports = (app, passport) => {
   }), userController.signIn)
   app.get('/logout', userController.logout)
 
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
+  app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
+
 }
