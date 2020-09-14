@@ -140,14 +140,14 @@ const adminController = {
           user.update({
             isAdmin: false
           }).then(() => {
-            req.flash('success_messages', `User'roll was successfully update to user`)
+            req.flash('success_messages', `User'role was successfully update to user`)
             return res.redirect('/admin/users')
           })
         } else {
           user.update({
             isAdmin: true
           }).then(() => {
-            req.flash('success_messages', `User'roll was successfully update to admin`)
+            req.flash('success_messages', `User'role was successfully update to admin`)
             return res.redirect('/admin/users')
           })
         }
