@@ -26,7 +26,9 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.renameColumn('Comments', 'RestaurnatId', 'RestaurantId')
   },
+
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Comments');
   }
