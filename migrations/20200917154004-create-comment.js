@@ -14,7 +14,7 @@ module.exports = {
       UserId: {
         type: Sequelize.INTEGER
       },
-      RestaurnatId: {
+      RestaurantId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -26,9 +26,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.renameColumn('Comments', 'RestaurnatId', 'RestaurantId')
   },
-
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Comments');
   }
