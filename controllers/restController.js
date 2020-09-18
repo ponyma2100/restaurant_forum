@@ -64,6 +64,27 @@ const restController = {
       })
     })
   },
+
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+      limit: 10,
+      raw: true,
+      nest: true,
+      order: [['createdAt', 'DESC']], //要排序的欄位、方式
+      include: [Category]
+    }).then(restaurants => {
+      Comment.findAll({
+        limit: 10, //指定數量
+        raw: true,
+        nest: true,
+        order: [['createdAt', 'DESC']],
+        include: [User, Restaurant] //引入相關 Model 
+      }).then(comments => {
+        return res.render('feeds', { restaurants, comments })
+      })
+    })
+  }
+
 }
 
 module.exports = restController
