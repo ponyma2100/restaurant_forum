@@ -4,8 +4,25 @@
   </div>
   <div class="col-md-6">
     <span>Name</span>
-    <h3>{{user.name}}</h3>
+    <h5>{{user.name}}</h5>
     <span>Email</span>
-    <h3>{{user.email}}</h3>
-    <a href="/users/{{user.id}}/edit"><button class="btn btn-primary my-2 my-sm-0">Edit</button></a>
+    <h5>{{user.email}}</h5>
+    <h5 style="margin-bottom: 50px;">{{user.Comments.length}}已評論餐廳</h5>
+    <a href="/users/{{user.id}}/edit"><button class="btn btn-primary my-2 my-sm-0 ">Edit</button></a>
+  </div>
+  <br>
+  <br>
+  <div class="container">
+    <h5 class="card-title border-0">{{user.Comments.length}}已評論餐廳:</h5>
+    <div class="row">
+      {{#each user.Comments}}
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h6 class="card-title">{{this.Restaurant.name}}</h6>
+          <a href="/admin/restaurants/{{this.RestaurantId}}"><img class="img-responsive center-block"
+              src="{{this.Restaurant.image}}" style="width: 100px;margin-bottom: 10px;"></a>
+        </div>
+      </div>
+      {{/each}}
+    </div>
   </div>
