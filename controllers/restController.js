@@ -32,6 +32,8 @@ const restController = {
         const data = result.rows.map(r => ({
           ...r.dataValues,
           description: r.dataValues.description.substring(0, 50),
+          //「現在這間餐廳」是否有出現在「使用者的收藏清單」裡面
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
           categoryName: r.Category.name
         }))
         Category.findAll({
@@ -55,12 +57,16 @@ const restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [
         Category,
+        { model: User, as: 'FavoritedUsers' },
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
       // console.log(restaurant.Comments[0].dataValues)
+      //「現在的 user」是否有出現在收藏「這間餐廳的使用者列表」裡面
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
+        isFavorited
       })
     })
   },
