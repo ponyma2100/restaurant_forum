@@ -93,6 +93,30 @@ const restController = {
         return res.render('feeds', { restaurants, comments })
       })
     })
+  },
+
+  getTopRest: (req, res) => {
+    // 撈出所有 User 與 followers 資料
+    return Restaurant.findAll({
+      limit: 10,
+      include: [
+        { model: User, as: 'FavoritedUsers' }
+      ]
+    }).then(restaurants => {
+      // 整理restaurants資料
+      restaurants = restaurants.map(r => ({
+        ...r.dataValues,
+        description: r.description.substring(0, 50),
+        // 計算追蹤者人數
+        FavoriteCount: r.FavoritedUsers.length,
+        // 判斷目前登入使用者是否已追蹤該 restaurants 物件
+        isFavorited: r.FavoritedUsers.map(d => d.id).includes(req.user.id)
+      }))
+      // console.log(restaurants)
+      // 依追蹤者人數排序清單
+      restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
+      return res.render('topRest', { restaurants: restaurants })
+    })
   }
 
 }

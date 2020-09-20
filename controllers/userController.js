@@ -173,6 +173,7 @@ const userController = {
         // 判斷目前登入使用者是否已追蹤該 User 物件
         isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
       }))
+      console.log(users)
       // 依追蹤者人數排序清單
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
       return res.render('topUser', { users: users })
