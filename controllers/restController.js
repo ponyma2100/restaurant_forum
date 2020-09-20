@@ -68,6 +68,7 @@ const restController = {
       //「現在的 user」是否有出現在收藏「這間餐廳的使用者列表」裡面
       const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       const isLiked = restaurant.LikedUsers.map(l => l.id).includes(req.user.id)
+      restaurant.increment('viewCounts')
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
         isFavorited, isLiked
@@ -102,9 +103,11 @@ const restController = {
         { model: User, as: 'FavoritedUsers' }
       ]
     }).then(restaurant => {
+      // console.log(restaurant)
       const commentCount = restaurant.Comments.length
       const FavoriteCount = restaurant.FavoritedUsers.length
-      return res.render('dashboard', { restaurant: restaurant.toJSON(), commentCount, FavoriteCount })
+      const incrementResult = restaurant.viewCounts
+      return res.render('dashboard', { restaurant: restaurant.toJSON(), commentCount, FavoriteCount, incrementResult })
     })
   },
 
