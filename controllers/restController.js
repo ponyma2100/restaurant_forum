@@ -94,6 +94,19 @@ const restController = {
       })
     })
   },
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        { model: Comment, include: [User] },
+        { model: User, as: 'FavoritedUsers' }
+      ]
+    }).then(restaurant => {
+      const commentCount = restaurant.Comments.length
+      const FavoriteCount = restaurant.FavoritedUsers.length
+      return res.render('dashboard', { restaurant: restaurant.toJSON(), commentCount, FavoriteCount })
+    })
+  },
 
   getTopRest: (req, res) => {
     // 撈出所有 User 與 followers 資料
