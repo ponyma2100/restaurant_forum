@@ -40,4 +40,4 @@ app.listen(port, () => {
   console.log(`Express is listening on http://localhost:${port}`)
 })
 
-require('./routes')(app, passport) // 把app, passport 傳入 routes
+require('./routes')(app) // 因為分了兩層，所以 index.js 不需要用到 passport 了，請把 app.js 單純改成傳入 app
