@@ -69,6 +69,7 @@ const restController = {
       const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       const isLiked = restaurant.LikedUsers.map(l => l.id).includes(req.user.id)
       restaurant.increment('viewCounts')
+      // restaurant.increment('favoriteCounts')
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
         isFavorited, isLiked
@@ -114,23 +115,30 @@ const restController = {
   getTopRest: (req, res) => {
     // 撈出所有 User 與 followers 資料
     return Restaurant.findAll({
-      limit: 10,
       include: [
-        { model: User, as: 'FavoritedUsers' }
-      ]
+        {
+          model: User,
+          as: 'FavoritedUsers',
+        },
+      ],
+      order: [[
+        'favoriteCounts', 'DESC'
+      ]],
+      limit: 10
     }).then(restaurants => {
       // 整理restaurants資料
+      // console.log(restaurants.map(r => r.dataValues.FavoritedUsers))
       restaurants = restaurants.map(r => ({
         ...r.dataValues,
         description: r.description.substring(0, 50),
         // 計算追蹤者人數
-        FavoriteCount: r.FavoritedUsers.length,
+        // FavoriteCount: r.FavoritedUsers.length,
         // 判斷目前登入使用者是否已追蹤該 restaurants 物件
-        isFavorited: r.FavoritedUsers.map(d => d.id).includes(req.user.id)
+        isFavorited: r.FavoritedUsers.map(d => d.id).includes(req.user.id),
+        incrementResult: r.favoriteCounts
       }))
-      // console.log(restaurants)
       // 依追蹤者人數排序清單
-      restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
+      // restaurants = restaurants.sort((a, b) => (b.FavoriteCount - a.FavoriteCount)).slice(0, 10)
       return res.render('topRest', { restaurants: restaurants })
     })
   }
