@@ -41,6 +41,8 @@ router.post('/admin/categories', authenticated, authenticatedAdmin, categoryCont
 
 router.put('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.putCategory)
 
+router.delete('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.deleteCategory)
+
 // 登入登出
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)

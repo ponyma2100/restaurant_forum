@@ -13,7 +13,7 @@ const categoryController = {
   // 新增分類
   postCategories: (req, res) => {
     categoryService.postCategories(req, res, (data) => {
-      if (data['status' === 'error']) {
+      if (data['status'] === 'error') {
         req.flash('error_messages', data['message'])
         return res.redirect('back')
       }
@@ -24,8 +24,7 @@ const categoryController = {
   // 修改分類
   putCategory: (req, res) => {
     categoryService.putCategory(req, res, (data) => {
-
-      if (data['status' === 'error']) {
+      if (data['status'] === 'error') {
         req.flash('error_messages', data['message'])
         return res.redirect('back')
       }
@@ -34,15 +33,12 @@ const categoryController = {
   },
 
   deleteCategory: (req, res) => {
-    return Category.findByPk(req.params.id)
-      .then(category => {
-        category.destroy()
-          .then(() => {
-            res.redirect('/admin/categories')
-          })
-      })
+    categoryService.deleteCategory(req, res, (data) => {
+      if (data['status'] === 'success') {
+        return res.redirect('/admin/categories')
+      }
+    })
   }
-
 }
 
 module.exports = categoryController
