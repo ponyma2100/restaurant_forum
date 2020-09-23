@@ -34,6 +34,9 @@ router.get('/admin/categories', authenticated, authenticatedAdmin, categoryContr
 
 router.get('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.getCategories)
 
+router.post('/admin/categories', authenticated, authenticatedAdmin, categoryController.postCategories)
+
+
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
 

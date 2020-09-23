@@ -12,16 +12,13 @@ const categoryController = {
 
   // 新增分類
   postCategories: (req, res) => {
-    const name = req.body.name
-    if (!name) {
-      req.flash('error_messages', 'name didn\'t exist')
-      return res.redirect('back')
-    } else {
-      Category.create({
-        name: name
-      })
-        .then(() => res.redirect('/admin/categories'))
-    }
+    categoryService.postCategories(req, res, (data) => {
+      if (data['status' === 'error']) {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      }
+      res.redirect('/admin/categories')
+    })
   },
 
   // 修改分類
