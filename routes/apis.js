@@ -20,6 +20,7 @@ const authenticatedAdmin = (req, res, next) => {
   }
 }
 
+// restaurants
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant)
@@ -30,13 +31,17 @@ router.put('/admin/restaurants/:id', upload.single('image'), adminController.put
 
 router.delete('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.deleteRestaurant)
 
+// categories
+
 router.get('/admin/categories', authenticated, authenticatedAdmin, categoryController.getCategories)
 
 router.get('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.getCategories)
 
 router.post('/admin/categories', authenticated, authenticatedAdmin, categoryController.postCategories)
 
+router.put('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.putCategory)
 
+// 登入登出
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
 

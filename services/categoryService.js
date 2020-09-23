@@ -24,7 +24,6 @@ const categoryService = {
   postCategories: (req, res, callback) => {
     const name = req.body.name
     if (!name) {
-      req.flash('error_messages', 'name didn\'t exist')
       return callback({ status: 'error', message: 'name didn\'t exist' })
     } else {
       Category.create({
@@ -32,6 +31,21 @@ const categoryService = {
       })
         .then(() => {
           callback({ status: 'success', message: '' })
+        })
+    }
+  },
+  // 修改分類
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      return callback({ status: 'error', message: 'name didn\'t exist' })
+    }
+    else {
+      return Category.findByPk(req.params.id)
+        .then((category) => {
+          category.update(req.body)
+            .then(() => {
+              callback({ status: 'success', message: '' })
+            })
         })
     }
   },

@@ -16,6 +16,12 @@ const categoryController = {
     })
   },
 
+  putCategory: (req, res) => {
+    categoryService.putCategory(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
 }
 
 module.exports = categoryController
